@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UXLINK Refer Validation Checker</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Google Fonts Link -->
+    <style>
+      body {
+        background-color: #181818;
+        color: #ffffff;
+        font-family: 'Poppins', sans-serif; /* Use Poppins font */
+        margin: 0;
+        padding: 20px;
+      }
+      h1 {
+        text-align: center;
+        color: #ffffff;
+        margin-bottom: 20px;
+      }
+      h2,
+      h3 {
+        color: #32cd32; /* Green color for headings */
+      }
+      .invalid-count {
+        color: #ff4d4d; /* Red color for 'Not Valid' count */
+      }
+      form {
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      table {
+        width: 80%; /* Set a width for the table */
+        margin: 20px auto; /* Center the table */
+        border-collapse: collapse;
+        background-color: #2c2c2c; /* Table background color */
+      }
+      th {
+        background-color: #333; /* Header background color */
+        padding: 12px;
+        text-align: left;
+        color: #32cd32; /* Green color for header text */
+      }
+      td {
+        padding: 12px;
+        border-top: 1px solid #444; /* Border for rows */
+        text-align: left; /* Align text to the left */
+      }
+      tbody tr:nth-child(even) {
+        background-color: #252525; /* Darker background for even rows */
+      }
+      tbody tr:hover {
+        background-color: #444; /* Highlight on hover */
+      }
+      button {
+        background-color: #32cd32;
+        color: #ffffff;
+        border: none;
+        padding: 10px 15px;
+        cursor: pointer;
+        font-size: 16px;
+        border-radius: 5px; /* Rounded corners for button */
+      }
+      button:hover {
+        background-color: #28a745; /* Darker green on hover */
+      }
+
+      /* Label Styles */
+      .label {
+        font-weight: bold; /* Bold label text */
+        font-size: 18px; /* Larger label size */
+        display: block; /* Ensure label stays above textarea */
+        margin-bottom: 10px; /* Space between label and textarea */
+      }
+
+      /* Textarea Styles */
+      textarea {
+        width: 100%; /* Full width of its container */
+        height: 150px; /* Set a consistent height */
+        font-size: 16px; /* Text size */
+        color: #333; /* Text color */
+        background-color: #f8f9fa; /* Light background */
+        border: 1px solid #ced4da; /* Subtle border */
+        border-radius: 5px; /* Rounded corners */
+        padding: 10px; /* Internal padding */
+        resize: none; /* Disable resize */
+      }
+
+      textarea:focus {
+        outline: none;
+        border-color: #32cd32; /* Highlight border on focus */
+        box-shadow: 0 0 5px rgba(50, 205, 50, 0.5); /* Glow effect */
+      }
+      footer {
+        text-align: center; /* Center the text */
+        margin-top: 20px; /* Add spacing above the footer */
+        font-size: 16px; /* Adjust the font size */
+        color: #ffffff; /* Text color (white in this case) */
+      }
+
+      footer a {
+        color: #32cd32; /* Set the link color (light green) */
+        text-decoration: none; /* Remove the default underline */
+      }
+
+      footer a:hover {
+        text-decoration: underline; /* Add an underline on hover */
+      }
+
+      .dashed-hr {
+        border: none;
+        border-top: 2px dashed #cccccc; /* Dashed line with light gray color */
+        margin: 20px 0; /* Add spacing around the line */
+      }
+
+      /* Submit Button Styles */
+      button {
+        background-color: #32cd32;
+        color: white;
+        font-size: 18px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #28a745; /* Darker green on hover */
+      }
+    </style>
+    <script>
+      function copyToClipboard(contentId) {
+        const content = document.getElementById(contentId).innerText.trim();
+        navigator.clipboard
+          .writeText(content)
+          .then(() => {
+            alert('Copied to clipboard!');
+          })
+          .catch((err) => {
+            alert('Failed to copy: ' + err);
+          });
+      }
+    </script>
+  </head>
+  <body>
+    <h1 style="margin-bottom: 50px; color: #03f63c">
+      UXLINK Refer Validation Checker
+    </h1>
+
+    <form method="post" style="max-width: 900px; margin: 0 auto">
+      <input type="hidden" name="csrfmiddlewaretoken" value="umrboBnLc76RvnnkhfyWiojjI1Txy0Q6j8bDqSbnTPC0CKnqG7FcHezGO59fzj89">
+
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 20px;
+        "
+      >
+        <!-- Token Data Form on the Left -->
+        <div style="flex: 1; margin-right: 10px">
+          <label for="id_token_data" class="label"
+            >Main Wallet Data</label
+          >
+          <textarea name="token_data" cols="40" rows="8" class="form-control" placeholder="Paste the main wallet data here...
+Example:
+0x7c...2Aae 20UXUY
+0x01...0E71 20UXUY
+0x1c...C296 0UXUY
+..." style="resize: none; background-color: #f8f9fa; padding: 10px; border: 1px solid #ced4da; border-radius: 5px;" required id="id_token_data">
+</textarea>
+        </div>
+
+        <!-- Wallet Address Form on the Right -->
+        <div style="flex: 1; margin-left: 50px">
+          <label for="id_wallet_data" class="label"
+            >Refer Wallet Address</label
+          >
+          <textarea name="wallet_data" cols="40" rows="8" class="form-control" placeholder="Paste the referral wallet addresses here...
+Example:
+0xA9bD1C72Ba2b1e9DfA7F5A2503C11f6522AF02C5
+107e
+..." style="resize: none; background-color: #f8f9fa; padding: 10px; border: 1px solid #ced4da; border-radius: 5px;" required id="id_wallet_data">
+</textarea>
+        </div>
+      </div>
+
+      <!-- Centered Submit Button -->
+      <div style="text-align: center">
+        <button
+          type="submit"
+          style="
+            background-color: #32cd32;
+            color: white;
+            font-size: 25px;
+            padding: 10px 20px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+          "
+        >
+          Submit
+        </button>
+      </div>
+    </form>
+    <hr class="dashed-hr" />
+
+    <style>
+      .dashed-hr {
+        border: none;
+        border-top: 2px dashed #cccccc; /* Dashed line with light gray color */
+        margin: 20px 0; /* Add spacing around the line */
+      }
+    </style>
+    <h1>Results</h1>
+    <h3>Total Valid Refer: <span>0</span></h3>
+    <h3 class="invalid-count">
+      Total Not Valid Refer:
+      <span class="invalid-count">0</span>
+    </h3>
+
+    <hr class="dashed-hr" />
+
+    <style>
+      .dashed-hr {
+        border: none;
+        border-top: 2px dashed #cccccc; /* Dashed line with light gray color */
+        margin: 20px 0; /* Add spacing around the line */
+      }
+    </style>
+
+    <h1>My Invite Details</h1>
+    <table style="border-radius: 10px">
+      <thead>
+        <tr>
+          <th>Invitees Account</th>
+          <th>Invite Rewards</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+      </tbody>
+    </table>
+    <hr class="dashed-hr" />
+
+    <style>
+      .dashed-hr {
+        border: none;
+        border-top: 2px dashed #cccccc; /* Dashed line with light gray color */
+        margin: 20px 0; /* Add spacing around the line */
+      }
+    </style>
+
+    <div id="20UXUY-wallets">
+      <h1>Wallet Analysis Results</h1>
+      <h2>20UXUY Wallets (0)</h2>
+      <button onclick="copyToClipboard('20UXUY-wallets')">
+        Copy All 20UXUY
+      </button>
+      <table style="border-radius: 10px">
+        <thead>
+          <tr>
+            <th>Invitees Account</th>
+            <th>Invite Rewards</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+        </tbody>
+      </table>
+    </div>
+    <hr class="dashed-hr" />
+
+    <style>
+      .dashed-hr {
+        border: none;
+        border-top: 2px dashed #cccccc; /* Dashed line with light gray color */
+        margin: 20px 0; /* Add spacing around the line */
+      }
+    </style>
+
+    <div id="0UXUY-wallets">
+      <h1>Wallet Analysis Results</h1>
+      <h2>0UXUY Wallets (0)</h2>
+      <button onclick="copyToClipboard('0UXUY-wallets')">Copy All 0UXUY</button>
+      <table style="border-radius: 10px">
+        <thead>
+          <tr>
+            <th>Invitees Account</th>
+            <th>Invite Rewards</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+        </tbody>
+      </table>
+    </div>
+    <hr class="dashed-hr" />
+
+    <style>
+      .dashed-hr {
+        border: none;
+        border-top: 2px dashed #cccccc; /* Dashed line with light gray color */
+        margin: 20px 0; /* Add spacing around the line */
+      }
+    </style>
+
+    <footer>
+      <p>Developed by <a href="http://t.me/sajjadsiam">Sajjad Siam</a></p>
+    </footer>
+  </body>
+</html>
